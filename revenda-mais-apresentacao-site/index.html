@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Revenda Mais — Apresentação Comercial 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:#000;overflow:hidden;font-family:Montserrat,sans-serif;}
+  #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000;}
+  #stage{position:relative;width:1920px;height:1080px;transform-origin:center center;flex:none;}
+  section.slide{position:absolute;inset:0;width:1920px;height:1080px;opacity:0;pointer-events:none;transition:opacity .45s ease;overflow:hidden;}
+  section.slide.active{opacity:1;pointer-events:auto;}
+  .icon{display:inline-block;vertical-align:middle;}
+  .icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  a{text-decoration:none;}
+  #controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(23,23,27,0.72);backdrop-filter:blur(8px);padding:10px 18px;border-radius:100px;z-index:1000;font-family:Montserrat,sans-serif;color:#fff;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+  #controls button{background:none;border:none;color:#fff;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:16px;padding:0;}
+  #controls button:hover{background:rgba(255,255,255,0.18);}
+  #counter{min-width:54px;text-align:center;font-variant-numeric:tabular-nums;}
+  #progress{position:fixed;top:0;left:0;height:4px;background:#e22446;z-index:1000;transition:width .4s ease;}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+<defs>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="i-thumbsup" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-verified" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-checkcircle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+  <symbol id="i-paperplane" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+</defs>
+</svg>
+
+<div id="progress"></div>
+<div id="viewport">
+<div id="stage">
+
+<section class="slide active" id="s-cover" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:96px 128px; display:flex; flex-direction:column; justify-content:center; gap:40px">
+  <div style="position:absolute; right:80px; top:60px; width:260px; height:260px; border:2px solid #e22446; border-radius:50%; opacity:0.2"></div>
+  <div style="position:absolute; right:240px; top:260px; width:150px; height:150px; background:#f6d3d9; border-radius:50%; opacity:0.6"></div>
+  <img src="assets/logo.png" alt="Revenda Mais - uma empresa Webmotors / Santander" style="width:300px; height:120px; object-fit:contain">
+  <div style="display:flex; align-items:center; gap:64px">
+    <div style="flex:1.3; display:flex; flex-direction:column; gap:32px">
+      <h1 style="font-family:Poppins, sans-serif; font-weight:800; font-size:66px; line-height:1.15; color:#17171b; margin:0">A tecnologia que já move mais de 5.000 revendas de veículos no Brasil</h1>
+      <p style="background:#e22446; padding:16px 32px; border-radius:100px; font-size:24px; font-weight:600; color:#ffffff; width:520px; margin:0">Apresentação comercial para parceiros · 2026</p>
+    </div>
+    <div style="flex:1; display:flex; justify-content:center">
+      <div style="position:relative; width:394px; height:700px">
+        <img src="assets/moises.jpg" alt="Moisés Barcelos" style="width:394px; height:700px; object-fit:cover; border-radius:20px; display:block">
+        <div style="position:absolute; left:0; right:0; bottom:0; padding:20px 24px; background:rgba(23,23,27,0.75); border-radius:0 0 20px 20px">
+          <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:24px; color:#ffffff; margin:0">Moisés Barcelos</p>
+          <p style="font-size:18px; color:#d8d9de; margin:4px 0 0">Gerente Especialista Região Centro-Oeste/Norte</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-quem-somos" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:44px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#e22446; margin:0">Quem somos</p>
+    <h2 style="font-family:Poppins, sans-serif; font-size:52px; font-weight:800; line-height:1.15; color:#17171b; margin:0; width:1664px">Uma empresa Webmotors / Santander, pioneira em tecnologia para revendas de veículos</h2>
+  </div>
+  <p style="font-family:Montserrat, sans-serif; font-size:27px; line-height:1.5; color:#3a3a42; margin:0; width:1500px">A Revenda Mais nasceu para simplificar a gestão de revendas de veículos e hoje faz parte do grupo Webmotors / Santander, uma das maiores plataformas de compra e venda de carros do Brasil. Estamos sediados no Água Verde, em Curitiba (PR) — no coração de uma das cidades mais vibrantes e tecnológicas do país.</p>
+  <div style="display:flex; gap:32px">
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:20px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:48px 32px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-clock"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-size:34px; font-weight:800; color:#17171b; margin:0">+20 anos de mercado</p>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:20px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:48px 32px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-users"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-size:34px; font-weight:800; color:#17171b; margin:0">+80 colaboradores</p>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:20px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:48px 32px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-star"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-size:34px; font-weight:800; color:#17171b; margin:0">5 estrelas no Google</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; bottom:60px; left:128px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-video" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:96px 128px 140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px; text-align:center">
+  <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Vídeo institucional</p>
+  <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; line-height:1.2; color:#17171b; width:1300px; margin:0">Conheça a Revenda Mais em poucos minutos</h2>
+  <div style="width:1280px; height:720px; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(23,23,27,0.18); border:1px solid #e3e6e4">
+    <iframe width="1280" height="720" src="https://www.youtube.com/embed/IxL4cpGNEAM" title="Revenda Mais - vídeo institucional" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block; width:1280px; height:720px; border:0"></iframe>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-trajetoria" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Nossa trajetória</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Mais de 20 anos evoluindo com o mercado automotivo</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(6, 1fr); gap:24px">
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2004</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Primeiros módulos do R+</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2006</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Venda do MCN para a BV Financeira</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2011</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Módulo NF-e</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2012</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Módulo Integrador</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2013</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Guarda de arquivos</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2016</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Módulo de Avaliação</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2018</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Módulo CRM (+2.000 lojas)</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2020</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Assinatura Eletrônica</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2022</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Módulo de Vistoria (+3.000 lojas)</p></div>
+    <div style="display:flex; flex-direction:column; gap:12px"><p style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#e22446; margin:0">2024</p><div style="width:40px; height:3px; background:#e22446"></div><p style="font-size:22px; line-height:1.35; color:#3a3a42; margin:0">Integração com IA (+5.000 lojas)</p></div>
+    <div style="display:flex; flex-direction:column; gap:10px; background:#e22446; border-radius:14px; padding:18px 20px 22px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:30px; color:#ffffff; margin:0">2025</p><div style="width:40px; height:3px; background:#ffffff"></div><p style="font-size:22px; font-weight:600; line-height:1.35; color:#ffffff; margin:0">Fusão com o grupo Webmotors / Santander</p></div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-numeros" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Por que a Revenda Mais</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Por que escolher a Revenda Mais?</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+5.000</p><p style="font-size:22px; color:#6a7179; margin:0">lojas ativas</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+20.000</p><p style="font-size:22px; color:#6a7179; margin:0">usuários ativos</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+20 anos</p><p style="font-size:22px; color:#6a7179; margin:0">de mercado</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">5 estrelas</p><p style="font-size:22px; color:#6a7179; margin:0">de avaliação no Google</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+500</p><p style="font-size:22px; color:#6a7179; margin:0">funcionalidades</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+30</p><p style="font-size:22px; color:#6a7179; margin:0">servidores na AWS</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">+65</p><p style="font-size:22px; color:#6a7179; margin:0">colaboradores</p></div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px 16px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:46px; color:#e22446; margin:0">&lt;1 min</p><p style="font-size:22px; color:#6a7179; margin:0">de resposta do suporte</p></div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-impacto" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:center; gap:56px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">O impacto real nas lojas</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Isso é o que roda, todos os meses, dentro da Revenda Mais</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:48px">
+    <div style="display:flex; flex-direction:column; gap:16px">
+      <span class="icon" style="width:44px; height:44px; color:#e22446"><svg><use href="#i-chart"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:112px; line-height:1; color:#e22446; margin:0">90.000</p>
+      <p style="font-size:28px; color:#3a3a42; margin:0">veículos cadastrados por mês</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px">
+      <span class="icon" style="width:44px; height:44px; color:#e22446"><svg><use href="#i-thumbsup"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:112px; line-height:1; color:#e22446; margin:0">50.000</p>
+      <p style="font-size:28px; color:#3a3a42; margin:0">vendas registradas por mês</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px">
+      <span class="icon" style="width:44px; height:44px; color:#e22446"><svg><use href="#i-database"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:112px; line-height:1; color:#e22446; margin:0">150.000</p>
+      <p style="font-size:28px; color:#3a3a42; margin:0">veículos em estoque monitorados</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulos-overview" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">A plataforma</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:56px; line-height:1.15; color:#17171b; margin:0">Um sistema completo, em um só lugar</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:28px">
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-star"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Avaliação</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">Precificação precisa com base no histórico Fipe e dados reais.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-database"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Gestão de Estoque</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">Da entrada à saída, com controle total de custos e margem.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-chart"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Financeiro</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">O controle financeiro mais completo do setor automotivo.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-link"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Integração</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">Anúncios publicados e atualizados automaticamente em vários portais.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-verified"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Notas Fiscais</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">Emissão de NF-e com cálculo automático de impostos e integração direta com SEFAZ e RENAVE.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:32px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-globe"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Sites de Alta Conversão</h3>
+      <p style="font-size:22px; line-height:1.4; color:#6a7179; margin:0">Site responsivo, seguro (SSL) e em conformidade com a LGPD.</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulo-avaliacao" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:22px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Módulo de Avaliação</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Precisão e agilidade para nunca mais perder margem</h2>
+  </div>
+  <div style="display:flex; gap:56px">
+    <div style="flex:1.3; display:flex; flex-direction:column; gap:28px">
+      <p style="font-size:26px; line-height:1.5; color:#3a3a42; margin:0">Realize avaliações com precisão e agilidade, com um processo profissional e seguro. Evite prejuízos na hora da preparação do veículo, com um orçamento preciso dos custos.</p>
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0"><b>Controle total:</b> cadastro, avaliação e precificação em 3 etapas.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0"><b>De olho nos gastos:</b> previsão de custos com pré-cadastro.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0"><b>Precificação:</b> histórico Fipe e dados reais de mercado.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0"><b>Mobilidade:</b> processo 100% pelo aplicativo, direto do celular.</p></div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:24px; background:#17171b; border-radius:24px; padding:44px; justify-content:center">
+      <p style="font-size:22px; font-weight:600; color:#c9cbd1; text-transform:uppercase; letter-spacing:2px; margin:0">O processo</p>
+      <div style="display:flex; flex-direction:column; gap:0">
+        <div style="display:flex; align-items:center; gap:20px"><div style="width:48px; height:48px; border-radius:50%; background:#e22446; display:flex; align-items:center; justify-content:center"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:24px; color:#ffffff; margin:0">1</p></div><p style="font-size:26px; color:#ffffff; margin:0">Cadastro</p></div>
+        <div style="width:3px; height:32px; background:#3f3f47"></div>
+        <div style="display:flex; align-items:center; gap:20px"><div style="width:48px; height:48px; border-radius:50%; background:#e22446; display:flex; align-items:center; justify-content:center"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:24px; color:#ffffff; margin:0">2</p></div><p style="font-size:26px; color:#ffffff; margin:0">Avaliação</p></div>
+        <div style="width:3px; height:32px; background:#3f3f47"></div>
+        <div style="display:flex; align-items:center; gap:20px"><div style="width:48px; height:48px; border-radius:50%; background:#e22446; display:flex; align-items:center; justify-content:center"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:24px; color:#ffffff; margin:0">3</p></div><p style="font-size:26px; color:#ffffff; margin:0">Precificação</p></div>
+      </div>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulo-estoque" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:22px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Módulo de Gestão de Estoque</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Toda a jornada do veículo, da entrada à saída</h2>
+  </div>
+  <div style="display:flex; gap:56px">
+    <div style="flex:1.3; display:flex; flex-direction:column; gap:28px">
+      <p style="font-size:26px; line-height:1.5; color:#3a3a42; margin:0">Gerencie toda a jornada do veículo, seja próprio ou consignado. Controle de custos, contratos e relatórios completos em um só lugar, para maximizar os resultados.</p>
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Estoque próprio e consignado, sem risco de confusão.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Custos de preparação controlados por fornecedor.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Margem real de cada veículo para negociações mais assertivas.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Contratos gerados automaticamente na entrada e na saída.</p></div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:20px; align-items:center; justify-content:center; text-align:center; background:#17171b; border-radius:24px; padding:44px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-database"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:44px; line-height:1.2; color:#ffffff; margin:0">Próprio ou consignado</p>
+      <p style="font-size:24px; color:#c9cbd1; margin:0">controle total em um só lugar</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulo-financeiro" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:22px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Módulo Financeiro</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">O melhor controle financeiro do mercado</h2>
+  </div>
+  <div style="display:flex; gap:56px">
+    <div style="flex:1.3; display:flex; flex-direction:column; gap:28px">
+      <p style="font-size:26px; line-height:1.5; color:#3a3a42; margin:0">Tenha controle total das contas a pagar e a receber, com visão clara de curto, médio e longo prazo. Mais de 20 anos de expertise em regras de negócio voltadas exclusivamente para o setor automotivo.</p>
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Contas a pagar e a receber, com visão clara do fluxo.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Controle de quitação de financiamentos.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Relatórios de DRE, fluxo de caixa e patrimônio líquido.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Baixa agrupada, parcial ou múltipla de títulos.</p></div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:18px; align-items:center; justify-content:center; text-align:center; background:#17171b; border-radius:24px; padding:44px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-chart"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:36px; line-height:1.3; color:#ffffff; margin:0">DRE · Fluxo de Caixa · Patrimônio Líquido</p>
+      <p style="font-size:22px; color:#c9cbd1; margin:0">tudo em relatórios prontos, todo mês</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulo-integracao-nfe" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:22px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Integração e Notas Fiscais</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Anúncios e notas fiscais, no automático</h2>
+  </div>
+  <div style="display:flex; gap:48px">
+    <div style="flex:1; display:flex; flex-direction:column; gap:24px; background:#17171b; border-radius:24px; padding:40px">
+      <span class="icon" style="width:40px; height:40px; color:#e22446"><svg><use href="#i-link"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:32px; color:#ffffff; margin:0">Módulo de Integração</h3>
+      <p style="font-size:24px; line-height:1.4; color:#c9cbd1; margin:0">Publique, altere e remova anúncios automaticamente em diversos portais.</p>
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Atualizações em tempo real</p></div>
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Retira o veículo do ar assim que é vendido</p></div>
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Cadastre uma vez, anuncie em todos os portais</p></div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:24px; background:#17171b; border-radius:24px; padding:40px">
+      <span class="icon" style="width:40px; height:40px; color:#e22446"><svg><use href="#i-verified"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:32px; color:#ffffff; margin:0">Notas Fiscais de Produtos</h3>
+      <p style="font-size:24px; line-height:1.4; color:#c9cbd1; margin:0">Emita notas fiscais dos veículos de forma simples e segura.</p>
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Cálculo automático de impostos</p></div>
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Envio automático SEFAZ e Integradoras Renave</p></div>
+        <div style="display:flex; gap:14px; align-items:flex-start"><span class="icon" style="width:24px; height:24px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:22px; color:#ffffff; margin:0">Armazenamento seguro de XML e DANFE</p></div>
+      </div>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-modulo-sites" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:22px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Sites de Alta Conversão</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Sua loja online, rápida, segura e feita para vender</h2>
+  </div>
+  <div style="display:flex; gap:56px">
+    <div style="flex:1.3; display:flex; flex-direction:column; gap:28px">
+      <p style="font-size:26px; line-height:1.5; color:#3a3a42; margin:0">Site responsivo e de alta performance para lojas de carros, motos e caminhões, com certificado de segurança SSL e em conformidade com a LGPD.</p>
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Filtros laterais, na mesma estrutura dos grandes portais.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Busca inteligente: resultados aparecem enquanto o cliente digita.</p></div>
+        <div style="display:flex; gap:16px; align-items:flex-start"><span class="icon" style="width:28px; height:28px; color:#e22446"><svg><use href="#i-checkcircle"/></svg></span><p style="font-size:24px; color:#1a1a1a; margin:0">Suporte a múltiplas lojas e filiais na mesma plataforma.</p></div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:18px; align-items:center; justify-content:center; text-align:center; background:#17171b; border-radius:24px; padding:44px">
+      <span class="icon" style="width:56px; height:56px; color:#e22446"><svg><use href="#i-lock"/></svg></span>
+      <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:40px; line-height:1.3; color:#ffffff; margin:0">SSL + LGPD</p>
+      <p style="font-size:22px; color:#c9cbd1; margin:0">segurança e conformidade de ponta a ponta</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-amplie" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Amplie ainda mais</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:52px; line-height:1.15; color:#17171b; margin:0">Recursos avulsos que crescem junto com a loja</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:28px">
+    <div style="display:flex; flex-direction:column; gap:16px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:36px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-lock"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Assinatura Eletrônica</h3>
+      <p style="font-size:22px; line-height:1.45; color:#6a7179; margin:0">Assine contratos com agilidade e segurança jurídica, sem o cliente precisar ir até a loja.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:36px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-search"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Módulo de Vistoria</h3>
+      <p style="font-size:22px; line-height:1.45; color:#6a7179; margin:0">Vistorias de compra, consignação e venda, padronizadas e com registro seguro.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; background:#ffffff; border:1px solid #e3e6e4; border-radius:16px; padding:36px">
+      <span class="icon" style="width:36px; height:36px; color:#e22446"><svg><use href="#i-link"/></svg></span>
+      <h3 style="font-family:Poppins, sans-serif; font-weight:700; font-size:28px; color:#17171b; margin:0">Integração RENAVE</h3>
+      <p style="font-size:22px; line-height:1.45; color:#6a7179; margin:0">Envio das notas fiscais direto para as principais empresas de Renave do setor.</p>
+    </div>
+  </div>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-planos" style="background:#fbfbfa; color:#1a1a1a; font-family:Montserrat, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:Poppins, sans-serif; font-size:24px; font-weight:700; color:#e22446; text-transform:uppercase; letter-spacing:2px; margin:0">Planos e valores</p>
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:48px; line-height:1.15; color:#17171b; margin:0">Um plano para cada tamanho de loja</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px">
+    <div style="display:flex; flex-direction:column; gap:12px; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:28px">
+      <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:26px; color:#17171b; margin:0">Plano 0.5</p>
+      <div style="display:flex; align-items:baseline; gap:6px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:38px; color:#e22446; margin:0">R$ 600</p><p style="font-size:20px; color:#6a7179; margin:0">/mês</p></div>
+      <p style="font-size:19px; color:#6a7179; margin:0">Anual: R$ 550/mês</p>
+      <div style="height:1px; background:#e3e6e4"></div>
+      <p style="font-size:20px; line-height:1.4; color:#3a3a42; margin:0">5 usuários · 25 veículos · 1 CNPJ · 1GB</p>
+      <p style="background:#fdecec; color:#e22446; font-size:18px; font-weight:600; padding:8px 12px; border-radius:8px; margin:0">Sem módulo financeiro</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:28px">
+      <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:26px; color:#17171b; margin:0">Plano 1.0</p>
+      <div style="display:flex; align-items:baseline; gap:6px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:38px; color:#e22446; margin:0">R$ 800</p><p style="font-size:20px; color:#6a7179; margin:0">/mês</p></div>
+      <p style="font-size:19px; color:#6a7179; margin:0">Anual: R$ 750/mês</p>
+      <div style="height:1px; background:#e3e6e4"></div>
+      <p style="font-size:20px; line-height:1.4; color:#3a3a42; margin:0">10 usuários · 50 veículos · 1 CNPJ · 2GB</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; background:#ffffff; border:2px solid #e22446; border-radius:20px; padding:28px">
+      <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:26px; color:#17171b; margin:0">Plano 2.0</p>
+      <div style="display:flex; align-items:baseline; gap:6px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:38px; color:#e22446; margin:0">R$ 1.000</p><p style="font-size:20px; color:#6a7179; margin:0">/mês</p></div>
+      <p style="font-size:19px; color:#6a7179; margin:0">Anual: R$ 950/mês</p>
+      <div style="height:1px; background:#e3e6e4"></div>
+      <p style="font-size:20px; line-height:1.4; color:#3a3a42; margin:0">15 usuários · 100 veículos · 1 CNPJ · 3GB</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; background:#ffffff; border:1px solid #e3e6e4; border-radius:20px; padding:28px">
+      <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:26px; color:#17171b; margin:0">Plano 3.0</p>
+      <div style="display:flex; align-items:baseline; gap:6px"><p style="font-family:Poppins, sans-serif; font-weight:800; font-size:38px; color:#e22446; margin:0">R$ 1.300</p><p style="font-size:20px; color:#6a7179; margin:0">/mês</p></div>
+      <p style="font-size:19px; color:#6a7179; margin:0">Anual: R$ 1.250/mês</p>
+      <div style="height:1px; background:#e3e6e4"></div>
+      <p style="font-size:20px; line-height:1.4; color:#3a3a42; margin:0">20 usuários · 150 veículos · 1 CNPJ · 4GB</p>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:32px; background:linear-gradient(135deg, #1c1b20 0%, #2e2d37 100%); border-radius:20px; padding:28px 40px; box-shadow:0 14px 34px rgba(23,23,27,0.2)">
+    <div style="display:flex; align-items:center; gap:22px">
+      <div style="width:52px; height:52px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#e22446; border-radius:14px">
+        <span class="icon" style="width:26px; height:26px; color:#ffffff"><svg><use href="#i-verified"/></svg></span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <p style="display:inline-block; width:fit-content; background:rgba(226,36,70,0.2); color:#ff9aac; font-family:Poppins, sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; padding:5px 14px; border-radius:100px; margin:0">Plano complementar</p>
+        <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:25px; color:#ffffff; margin:0">NF-e + RENAVE</p>
+        <p style="font-size:18px; color:#c9cbd1; margin:0">Até 1 usuário · 1 CNPJ · cadastro e emissão de NF-e com integração ao RENAVE</p>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px; background:rgba(255,255,255,0.06); border:1px solid rgba(226,36,70,0.45); border-radius:16px; padding:14px 26px">
+      <div style="display:flex; align-items:baseline; gap:8px">
+        <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:34px; color:#e22446; margin:0">R$ 430</p>
+        <p style="font-size:18px; color:#c9cbd1; margin:0">/mês</p>
+      </div>
+      <p style="font-size:16px; color:#8f929c; margin:0">anual R$ 380/mês</p>
+    </div>
+  </div>
+  <p style="font-size:19px; color:#6a7179; width:1664px; margin:0">Módulos inclusos em todos os planos (exceto Financeiro no 0.5): Estoque, Avaliação, Comercial, Controle de Clientes e Fornecedores, Integrador Web (5 portais), Relatórios e Aplicativo Revenda Mais.</p>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:56px; width:110px; height:44px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-parceria-santander" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:32px; text-align:center">
+  <p style="background:#e22446; color:#ffffff; font-family:Poppins, sans-serif; font-size:32px; font-weight:800; text-transform:uppercase; letter-spacing:3px; padding:18px 44px; border-radius:100px; margin:0">Condição especial</p>
+  <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:220px; line-height:1; color:#e22446; margin:0">-70%</p>
+  <h2 style="font-family:Poppins, sans-serif; font-weight:700; font-size:48px; line-height:1.3; color:#17171b; width:1300px; margin:0">Clientes Santander Financiamentos têm até <b style="color:#e22446">70% de desconto</b> nos planos Revenda Mais</h2>
+  <p style="font-size:26px; line-height:1.5; color:#3a3a42; width:1100px; margin:0">A parceria entre Revenda Mais e Santander Financiamentos garante condições exclusivas para lojas parceiras. Fale com o consultor da sua região para simular.</p>
+  <img src="assets/logo.png" alt="Revenda Mais" style="position:absolute; left:128px; bottom:60px; width:130px; height:52px; object-fit:contain">
+</section>
+
+<section class="slide" id="s-contato" style="background:#fbfbfa; color:#17171b; font-family:Montserrat, sans-serif; padding:128px; display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:80px">
+  <div style="position:absolute; left:-60px; bottom:-60px; width:280px; height:280px; border:2px solid #e22446; border-radius:50%; opacity:0.15"></div>
+  <div style="flex:1.15; display:flex; flex-direction:column; gap:36px">
+    <img src="assets/logo.png" alt="Revenda Mais - uma empresa Webmotors / Santander" style="width:320px; height:128px; object-fit:contain">
+    <h2 style="font-family:Poppins, sans-serif; font-weight:800; font-size:58px; color:#17171b; margin:0">Vamos conversar?</h2>
+    <div style="display:flex; flex-direction:column; gap:20px">
+      <div style="display:flex; align-items:center; gap:16px"><span class="icon" style="color:#e22446; width:28px; height:28px"><svg><use href="#i-home"/></svg></span><p style="font-size:24px; color:#3a3a42; margin:0">Av. Pres. Getúlio Vargas, 3550 · Água Verde, Curitiba/PR</p></div>
+      <div style="display:flex; align-items:center; gap:16px"><span class="icon" style="color:#e22446; width:28px; height:28px"><svg><use href="#i-paperplane"/></svg></span><p style="font-size:24px; color:#3a3a42; margin:0">contato@revendamais.com.br · www.revendamais.com.br</p></div>
+    </div>
+    <p style="font-size:22px; color:#6a7179; margin:0">Moisés Barcelos · Consultor de Vendas · moises@revendamais.com.br</p>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:20px; background:#ffffff; border:2px solid #e22446; border-radius:28px; padding:40px">
+    <p style="font-family:Poppins, sans-serif; font-weight:700; font-size:24px; color:#17171b; text-align:center; margin:0">Fale agora pelo WhatsApp</p>
+    <img src="assets/whatsapp-qr.png" alt="QR Code para contato via WhatsApp" style="width:400px; height:400px; object-fit:contain">
+    <span class="icon" style="color:#e22446; width:32px; height:32px"><svg><use href="#i-chat"/></svg></span>
+    <p style="font-family:Poppins, sans-serif; font-weight:800; font-size:34px; color:#e22446; text-align:center; margin:0">(41) 99566-0156</p>
+    <p style="font-size:20px; color:#6a7179; text-align:center; margin:0">Aponte a câmera do celular para o código</p>
+  </div>
+</section>
+
+</div>
+</div>
+
+<div id="controls">
+  <button id="prevBtn" aria-label="Anterior" title="Anterior (←)">‹</button>
+  <span id="counter">1 / 16</span>
+  <button id="nextBtn" aria-label="Próximo" title="Próximo (→)">›</button>
+  <button id="fsBtn" aria-label="Tela cheia" title="Tela cheia (F)">⛶</button>
+</div>
+
+<script>
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var idx = 0;
+
+  function show(i){
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function(s, n){ s.classList.toggle('active', n === idx); });
+    document.getElementById('counter').textContent = (idx + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = (((idx + 1) / slides.length) * 100) + '%';
+    if (history.replaceState) { history.replaceState(null, '', '#' + slides[idx].id); }
+  }
+  function next(){ show(idx + 1); }
+  function prev(){ show(idx - 1); }
+  function goTo(id){
+    var i = slides.findIndex(function(s){ return s.id === id; });
+    if (i >= 0) show(i);
+  }
+
+  document.getElementById('nextBtn').onclick = next;
+  document.getElementById('prevBtn').onclick = prev;
+  document.getElementById('fsBtn').onclick = function(){
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }
+    else { document.exitFullscreen && document.exitFullscreen(); }
+  };
+
+  window.addEventListener('keydown', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'IFRAME') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { next(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key.toLowerCase() === 'f') { document.getElementById('fsBtn').click(); }
+  });
+
+  function fitStage(){
+    var stage = document.getElementById('stage');
+    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+
+  var initial = location.hash.replace('#', '');
+  if (initial) {
+    var i0 = slides.findIndex(function(s){ return s.id === initial; });
+    if (i0 >= 0) idx = i0;
+  }
+  show(idx);
+</script>
+
+</body>
+</html>
